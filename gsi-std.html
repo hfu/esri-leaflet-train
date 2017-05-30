@@ -17,58 +17,50 @@ require([
   "esri/widgets/BasemapToggle",
   "esri/views/SceneView",
   "dojo/domReady!"
-], function(esriConfig, WebTileLayer, Map,
-      Basemap, BasemapToggle, SceneView) {
-      esriConfig.request.corsEnabledServers.push("cyberjapandata.gsi.go.jp");
-      var mapBaseLayer = new WebTileLayer({
-        urlTemplate: "https://cyberjapandata.gsi.go.jp/xyz/std/{level}/{col}/{row}.png",
-        copyright: "GST Tile (Standard Map)"
-      });
-      var gsistd = new Basemap({
-        baseLayers: [mapBaseLayer],
-        title: "Terrain",
-        id: "terrain",
-        thumbnailUrl: "https://cyberjapandata.gsi.go.jp/xyz/std/9/454/201.png"
-      });
-      var map = new Map({
+], function(esriConfig, WebTileLayer, Map, Basemap, BasemapToggle, SceneView) {
+  esriConfig.request.corsEnabledServers.push("cyberjapandata.gsi.go.jp");
+  var mapBaseLayer = new WebTileLayer({
+    urlTemplate: "https://cyberjapandata.gsi.go.jp/xyz/std/{level}/{col}/{row}.png",
+    copyright: "GST Tile (Standard Map)"
+  });
+  var gsistd = new Basemap({
+    baseLayers: [mapBaseLayer],
+    title: "Terrain",
+    id: "terrain",
+    thumbnailUrl: "https://cyberjapandata.gsi.go.jp/xyz/std/9/454/201.png"
+  });
+  var map = new Map({
         basemap: "satellite",
         ground: "world-elevation"
-      });
-      var initCamera = {
-        heading: 124.7,
-        tilt: 82.9,
-        position: {
-          latitude: 35,
-          longitude: 135,
-          z: 1990
-        }
-      };
-      var view = new SceneView({
-        container: "viewDiv",
-        map: map,
-        camera: initCamera,
-        // The secondary (Stamen) basemap only covers the contiguous USA.
-        // Set constraints to make the user unlikely to go to unsupported locations
-        constraints: {
-          altitude: {
-            max: 500000
-          }
-        }
-      });
+  });
+  var initCamera = {
+    heading: 124.7,
+    tilt: 32.9,
+    position: {latitude: 35, longitude: 135, z: 1990}
+  };
+  var view = new SceneView({
+    container: "viewDiv",
+    map: map,
+    camera: initCamera,
+    constraints: {
+      altitude: {
+        max: 500000
+      }
+    }
+  });
 
-      view.then(function() {
-        // Add a basemap toggle widget to toggle between basemaps
-        var toggle = new BasemapToggle({
-          titleVisible: true,
-          view: view,
-          nextBasemap: gsistd
-        });
-        view.ui.add(toggle, "top-right");
-      });
+  view.then(function() {
+    var toggle = new BasemapToggle({
+      titleVisible: true,
+      view: view,
+      nextBasemap: gsistd
     });
-  </script>
+    view.ui.add(toggle, "top-right");
+  });
+});
+</script>
 </head>
 <body>
-  <div id="viewDiv"></div>
+<div id="viewDiv"></div>
 </body>
 </html>
